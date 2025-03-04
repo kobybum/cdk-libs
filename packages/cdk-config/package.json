@@ -1,0 +1,62 @@
+{
+  "name": "@cdklib/cdk-config",
+  "version": "0.0.9",
+  "description": "A library for modular CDK configuration",
+  "main": "./dist/index.cjs",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cdk",
+    "cdktf",
+    "cdk8s",
+    "config"
+  ],
+  "author": {
+    "name": "Koby Bass",
+    "url": "https://github.com/kobybum"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/node": "^22.13.9",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "tsup": "^8.4.0",
+    "type-fest": "^4.37.0",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  },
+  "dependencies": {
+    "constructs": "^10.4.2",
+    "zod": "^3.24.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kobybum/cdk-libs.git",
+    "directory": "packages/cdk-config"
+  },
+  "bugs": {
+    "url": "https://github.com/kobybum/cdk-libs/issues"
+  },
+  "homepage": "https://github.com/kobybum/cdk-libs"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "cdk-monorepo",
+  "packageManager": "pnpm@10.5.2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "turbo": "^2.4.4",
+    "turborepo": "^0.0.1"
+  }
+}
