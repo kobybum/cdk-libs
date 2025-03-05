@@ -21,10 +21,10 @@ importers:
   packages/config:
     dependencies:
       constructs:
-        specifier: ^10.4.2
+        specifier: ^10.0.0
         version: 10.4.2
       zod:
-        specifier: ^3.24.2
+        specifier: ^3.0.0
         version: 3.24.2
     devDependencies:
       '@eslint/js':

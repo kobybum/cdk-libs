@@ -81,7 +81,7 @@ const awsConfig = new CdkConfig(schema)
   })
 
 // Get configuration for a specific environment
-const devConfig = awsConfig.get('dev')
+const devConfig = awsConfig.get('dev/staging')
 console.log(devConfig)
 // { accountId: '123456789012', region: 'us-east-1', bucketName: 'my-dev-bucket' }
 ```
@@ -131,7 +131,7 @@ const awsConfig = new CdkConfig(schema)
     tags: { Environment: envId },
   }))
 
-const devConfig = awsConfig.get('dev')
+const devConfig = awsConfig.get('dev/staging')
 console.log(devConfig.bucketArn) // "arn:aws:s3:::my-dev-bucket"
 console.log(devConfig.tags.Environment) // "dev"
 ```
@@ -208,15 +208,12 @@ class MyStack extends Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id)
 
-    // Get the environment ID from the construct context
-    const envId = getEnvId(this)
-
-    // Get the configuration for this environment
-    const config = awsConfig.get(envId)
+    // Get the configuration for this environment - You can use scope or EnvId
+    const { region } = awsConfig.get(this)
 
     // Use the configuration values in your constructs
     new SomeBucket(this, 'MyBucket', {
-      bucketName: config.bucketName,
+      bucketName: bucketName,
       tags: config.tags,
     })
   }
