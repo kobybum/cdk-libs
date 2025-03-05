@@ -1,4 +1,4 @@
-# @cdklib/cdk-config
+# @cdklib/config
 
 A type-safe, hierarchical configuration library for AWS CDK projects that supports environment-specific overrides and runtime-computed values.
 
@@ -20,13 +20,13 @@ A type-safe, hierarchical configuration library for AWS CDK projects that suppor
 
 ```bash
 # Using pnpm
-pnpm add @cdklib/cdk-config
+pnpm add @cdklib/config
 
 # Using npm
-npm install @cdklib/cdk-config
+npm install @cdklib/config
 
 # Using yarn
-yarn add @cdklib/cdk-config
+yarn add @cdklib/config
 ```
 
 ## Key Features
@@ -42,7 +42,7 @@ yarn add @cdklib/cdk-config
 ## Basic Usage
 
 ```typescript
-import { CdkConfig } from '@cdklib/cdk-config'
+import { CdkConfig } from '@cdklib/config'
 import { z } from 'zod'
 
 // Define a schema for your configuration
@@ -148,8 +148,8 @@ export const eksConfig = new CdkConfig(eksSchema)
 You can define your own environment ID types by declaring them in a `.d.ts` file:
 
 ```typescript
-// cdk-config.d.ts
-declare module '@cdklib/cdk-config/types' {
+// cdklib-config.d.ts
+declare module '@cdklib/config/types' {
   // Define your custom environment IDs
   export type EnvId =
     | 'global'
@@ -166,7 +166,7 @@ Then, include the types in your `tsconfig.json`:
 ```json
 {
     ...,
-    "include": [..., "<path to file>/cdk-config.d.ts"],
+    "include": [..., "<path to file>/cdklib-config.d.ts"],
     ...
 }
 ```
@@ -175,10 +175,10 @@ This provides type safety and intellisense when using `set`/`get` methods.
 
 ## Using with Constructs
 
-The `@cdklib/cdk-config` library seamlessly integrates with CDK constructs using the environment context utilities:
+The `@cdklib/config` library seamlessly integrates with CDK constructs using the environment context utilities:
 
 ```typescript
-import { getEnvId, setEnvContext, initialContext } from '@cdklib/cdk-config'
+import { getEnvId, setEnvContext, initialContext } from '@cdklib/config'
 import { App, Stack } from 'aws-cdk-lib'
 import { awsConfig } from './config/aws'
 

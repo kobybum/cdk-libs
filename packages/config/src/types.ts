@@ -1,4 +1,4 @@
-import { EnvId } from '@cdklib/cdk-config/types'
+import { EnvId } from '@cdklib/config/types'
 import { z } from 'zod'
 
 /**

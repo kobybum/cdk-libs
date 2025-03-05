@@ -1,4 +1,4 @@
-import { EnvId } from '@cdklib/cdk-config/types'
+import { EnvId } from '@cdklib/config/types'
 import { z } from 'zod'
 import { deepMerge } from './deep-merge'
 import type { ConfigMergeFn, Overrides, PartialDeep, PathSegments, RuntimeConfigFn } from './types'
@@ -15,7 +15,7 @@ import { getEnvId } from './context'
  * ### Example
  * From `config/aws.ts`
  * ```js
- * import { CdkConfig } from '@cdklib/cdk-config'
+ * import { CdkConfig } from '@cdklib/config'
  *
  * const schema = z.object({
  *   accountId: z.string(),
@@ -40,7 +40,7 @@ export class CdkConfig<TSchema extends z.ZodObject<any>, TEnvId extends string =
      * ### Example
      *
      * ```js
-     * import { CdkConfig } from '@cdklib/cdk-config'
+     * import { CdkConfig } from '@cdklib/config'
      *
      * const schema = z.object({
      *   accountId: z.string(),

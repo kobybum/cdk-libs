@@ -1,5 +1,5 @@
 {
-  "name": "cdk-monorepo",
+  "name": "cdklib",
   "packageManager": "pnpm@10.5.2",
   "version": "1.0.0",
   "description": "",
@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "prettier": "^3.5.3",
     "turbo": "^2.4.4",

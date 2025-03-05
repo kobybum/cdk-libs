@@ -46,7 +46,7 @@ describe('CDK Environment Context Functions', () => {
         const context = initialContext('staging')
 
         // Verify context object structure
-        expect(context).toHaveProperty('@cdklib/cdk-config/envId', 'staging')
+        expect(context).toHaveProperty('@cdklib/config/envId', 'staging')
 
         // Create mock app class that would use initialContext
         class MockApp {
