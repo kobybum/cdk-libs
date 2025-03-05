@@ -1,8 +1,8 @@
-import { EnvId } from '@cdklib/config/types'
+import { type EnvId } from '@cdklib/config/types'
 import { z } from 'zod'
 import { deepMerge } from './deep-merge'
 import type { ConfigMergeFn, Overrides, PartialDeep, PathSegments, RuntimeConfigFn } from './types'
-import { Construct } from 'constructs'
+import { type Construct } from 'constructs'
 import { getEnvId } from './context'
 
 /**

@@ -1,4 +1,4 @@
-import { EnvId } from '@cdklib/config/types'
+import { type EnvId } from '@cdklib/config/types'
 import { Construct } from 'constructs'
 
 /** A context key used on constructs to propagate the env id */

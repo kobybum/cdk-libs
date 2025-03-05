@@ -1,5 +1,5 @@
-import { EnvId } from '@cdklib/config/types'
-import { z } from 'zod'
+import { type EnvId } from '@cdklib/config/types'
+import { type z } from 'zod'
 
 /**
  * Helper type to extract path segments from a string type

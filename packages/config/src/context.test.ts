@@ -14,7 +14,7 @@ class TestConstruct extends Construct {
     }
 }
 
-describe('CDK Environment Context Functions', () => {
+describe('context propagation', () => {
     test('context propagation through construct tree', () => {
         // Create a root construct with env context set during construction
         const rootConstruct = new RootConstruct('app')
@@ -40,7 +40,9 @@ describe('CDK Environment Context Functions', () => {
         // Root and other branches should remain unchanged
         expect(getEnvId(root)).toBe('prod')
     })
+})
 
+describe('initialContext', () => {
     test('initialContext for app initialization', () => {
         // Test creating initial context object
         const context = initialContext('staging')
@@ -80,7 +82,9 @@ describe('CDK Environment Context Functions', () => {
         // Test retrieving from the construct
         expect(getEnvId(app.mainConstruct)).toBe('staging')
     })
+})
 
+describe('getEnvId', () => {
     test('getEnvId with both construct and EnvId input types', () => {
         // Test with construct having environment set during construction
         const rootConstruct = new RootConstruct('app')

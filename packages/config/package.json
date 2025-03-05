@@ -1,6 +1,6 @@
 {
   "name": "@cdklib/config",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "A library for modular CDK configuration",
   "main": "./dist/index.cjs",
   "type": "module",
@@ -18,8 +18,11 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build"
+    "lint:fix": "eslint --fix .",
+    "version": "pnpm version",
+    "publish": "pnpm build && pnpm publish --ignore-scripts --no-git-checks --access public"
   },
   "keywords": [
     "cdk",
@@ -59,5 +62,9 @@
   "bugs": {
     "url": "https://github.com/kobybum/cdk-libs/issues"
   },
-  "homepage": "https://github.com/kobybum/cdk-libs"
+  "homepage": "https://github.com/kobybum/cdk-libs",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
 }

@@ -33,7 +33,7 @@ const config = [
       'node_modules/',
       'dist/',
     ],
-    files: ['**/*.ts', '**/*.js'],
+    files: ['src/**/*.ts', 'src/**/*.js'],
     rules: {
       '@typescript-eslint/consistent-type-imports': [
         'error',

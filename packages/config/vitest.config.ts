@@ -10,7 +10,9 @@ export default defineConfig({
         globals: true,
         coverage: {
             provider: 'v8',
-            reporter: ['text', 'json', 'html'],
+            reporter: ['text', 'json-summary'],
+            include: ['src/**/*.ts'],
+            exclude: ['src/index.ts'],
         },
     },
     resolve: {

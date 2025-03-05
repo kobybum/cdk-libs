@@ -235,4 +235,12 @@ describe('deepMerge', () => {
         expect(result.d).toBe(4) // From override
         expect(result.e).toBe(5) // From override
     })
+
+    it('should unset keys when explicitly undefined or null', () => {
+        const original = { a: 1, b: 2, c: 3 }
+        const override = { b: undefined, c: null }
+        const result = deepMerge(original, override)
+
+        expect(result).toEqual({ a: 1, b: undefined, c: null })
+    })
 })

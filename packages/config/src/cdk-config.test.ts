@@ -507,10 +507,14 @@ describe('CdkConfig', () => {
             // Should get values correctly from prefixes
             const service1Result = config.get('dev/service1')
             expect(service1Result.name).toBe('dev-base')
+        })
 
-            // Should still validate complete environment IDs
-            // TypeScript would prevent this:
-            // const invalidResult = config.get('invalid/service');
+        it('should support simple environment ids', () => {
+            const config = new CdkConfig<typeof simpleSchema, 'dev' | 'prod'>(simpleSchema)
+            config.set('dev', { name: 'dev-base' })
+            config.set('prod', { name: 'prod-base' })
+
+            expect(config.get('dev')).toEqual({ name: 'dev-base', isEnabled: true })
         })
     })
 })

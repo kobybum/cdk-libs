@@ -1,8 +1,24 @@
 # @cdklib/config
 
+- [Table of Contents](#table-of-contents)
+
 A type-safe, hierarchical configuration library for AWS CDK projects that supports environment-specific overrides and runtime-computed values.
 
-[Table of Contents](#table-of-contents)
+## Why This Exists
+
+While tools like Terragrunt for Terraform and Helm charts for Kubernetes handle configuration management, CDK projects often don’t have a unified solution.
+
+`@cdklib/config` provides a simple, type-safe way to manage nested environments and shared settings.
+
+### Key Features
+
+- **Simple** - Offers a clear configuration approach for CDK projects.
+- **Runtime Validation** - Utilizes Zod to catch missing / malformed configuration at runtime, before you apply your stacks.
+- **Hierarchical** - Supports nested environments with shared defaults and environment-specific overrides.
+- **Cross-CDK Compatibility** - Works with AWS CDK, cdktf, and cdk8s.
+- **Shared Configuration** - Enables configuration sharing through a monorepo with a shared package or a common configuration directory.
+
+This is a very simple implementation; you may copy it to your project or contribute.
 
 # Table of Contents
 
