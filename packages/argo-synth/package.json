@@ -1,7 +1,7 @@
 {
-  "name": "@cdklib/config",
+  "name": "@cdklib/argocd-synth",
   "version": "0.0.0",
-  "description": "A library for modular CDK configuration",
+  "description": "Manage ArgoCD structure with cdk8s",
   "main": "./dist/index.cjs",
   "type": "module",
   "exports": {
@@ -24,10 +24,10 @@
     "publish": "pnpm build && pnpm publish --ignore-scripts --no-git-checks --access public"
   },
   "keywords": [
-    "cdk",
-    "cdktf",
+    "kubernetes",
+    "k8s",
     "cdk8s",
-    "config"
+    "argocd"
   ],
   "author": {
     "name": "Koby Bass",
@@ -47,11 +47,12 @@
     "tsup": "^8.4.0",
     "type-fest": "^4.37.0",
     "typescript": "^5.8.2",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.7",
+    "yaml": "^2.7.0"
   },
   "dependencies": {
-    "constructs": "^10.0.0",
-    "zod": "^3.0.0"
+    "cdk8s": "^2.0.0",
+    "constructs": "^10.0.0"
   },
   "repository": {
     "type": "git",

@@ -14,7 +14,7 @@ on:
         default: '@cdklib/config'
         options:
           - '@cdklib/config'
-
+          - '@cdklib/argo-synth'
 permissions:
   contents: write
 
