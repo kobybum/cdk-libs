@@ -20,7 +20,7 @@ const config = [
         ...globals.node,
       },
     },
-    files: ['**/*.ts', '**/*.js'],
+    files: ['src/**/*.ts', 'src/**/*.js'],
     rules: {
       '@typescript-eslint/consistent-type-imports': [
         'error',
