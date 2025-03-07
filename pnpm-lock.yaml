@@ -72,9 +72,6 @@ importers:
 
   packages/aws-policy:
     dependencies:
-      constructs:
-        specifier: ^10.0.0
-        version: 10.4.2
       zod:
         specifier: ^3.0.0
         version: 3.24.2

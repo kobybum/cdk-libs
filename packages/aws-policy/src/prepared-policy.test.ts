@@ -144,4 +144,124 @@ describe('PreparedPolicy', () => {
             'arn:aws:iam::123456789012:user/developer',
         )
     })
+
+    describe('AwsPreparedPolicy.combine', () => {
+        it('should combine multiple prepared policies with different parameter types', () => {
+            // Arrange
+            const s3Policy = AwsPreparedPolicy.new<{
+                bucketName: string
+            }>(({ bucketName }) => ({
+                Effect: 'Allow',
+                Action: ['s3:GetObject', 's3:ListBucket'],
+                Resource: [`arn:aws:s3:::${bucketName}`, `arn:aws:s3:::${bucketName}/*`],
+            }))
+
+            const lambdaPolicy = AwsPreparedPolicy.new<{
+                functionName: string
+                region: string
+            }>(({ functionName, region }) => ({
+                Effect: 'Allow',
+                Action: ['lambda:InvokeFunction'],
+                Resource: [`arn:aws:lambda:${region}:*:function:${functionName}`],
+            }))
+
+            // Act
+            const combinedPolicy = AwsPreparedPolicy.combine(s3Policy, lambdaPolicy)
+
+            // Assert - TypeScript should enforce all parameters are required
+            const policy = combinedPolicy.fill({
+                bucketName: 'data-bucket',
+                functionName: 'processor',
+                region: 'us-west-2',
+            })
+
+            const policyJson = JSON.parse(policy.toJson())
+
+            expect(policyJson.Statement).toHaveLength(2)
+            expect(policyJson.Statement[0].Resource).toContain('arn:aws:s3:::data-bucket')
+            expect(policyJson.Statement[1].Resource[0]).toBe(
+                'arn:aws:lambda:us-west-2:*:function:processor',
+            )
+        })
+
+        it('should handle policies that return multiple statements', () => {
+            // Arrange
+            const s3Policy = AwsPreparedPolicy.new<{
+                bucketName: string
+            }>(({ bucketName }) => [
+                {
+                    Effect: 'Allow',
+                    Action: 's3:GetObject',
+                    Resource: `arn:aws:s3:::${bucketName}/*`,
+                },
+                {
+                    Effect: 'Allow',
+                    Action: 's3:ListBucket',
+                    Resource: `arn:aws:s3:::${bucketName}`,
+                },
+            ])
+
+            const dynamoPolicy = AwsPreparedPolicy.new<{
+                tableName: string
+            }>(({ tableName }) => ({
+                Effect: 'Allow',
+                Action: ['dynamodb:GetItem', 'dynamodb:PutItem'],
+                Resource: `arn:aws:dynamodb:*:*:table/${tableName}`,
+            }))
+
+            // Act
+            const combinedPolicy = AwsPreparedPolicy.combine(s3Policy, dynamoPolicy)
+            const policy = combinedPolicy.fill({
+                bucketName: 'assets',
+                tableName: 'users',
+            })
+
+            const policyJson = JSON.parse(policy.toJson())
+
+            // Assert
+            expect(policyJson.Statement).toHaveLength(3)
+            expect(policyJson.Statement[0].Resource).toBe('arn:aws:s3:::assets/*')
+            expect(policyJson.Statement[1].Resource).toBe('arn:aws:s3:::assets')
+            expect(policyJson.Statement[2].Resource).toBe('arn:aws:dynamodb:*:*:table/users')
+        })
+
+        it('should work with partial filling', () => {
+            // Arrange
+            const s3Policy = AwsPreparedPolicy.new<{
+                bucketName: string
+            }>(({ bucketName }) => ({
+                Effect: 'Allow',
+                Action: 's3:GetObject',
+                Resource: `arn:aws:s3:::${bucketName}/*`,
+            }))
+
+            const snsPolicy = AwsPreparedPolicy.new<{
+                topicName: string
+            }>(({ topicName }) => ({
+                Effect: 'Allow',
+                Action: 'sns:Publish',
+                Resource: `arn:aws:sns:*:*:${topicName}`,
+            }))
+
+            // Act
+            const combinedPolicy = AwsPreparedPolicy.combine(s3Policy, snsPolicy)
+
+            // Partially fill
+            const partialPolicy = combinedPolicy.fillPartial({
+                bucketName: 'logs',
+            })
+
+            // Fill remaining params
+            const fullPolicy = partialPolicy.fill({
+                topicName: 'alerts',
+            })
+
+            const policyJson = JSON.parse(fullPolicy.toJson())
+
+            // Assert
+            expect(policyJson.Statement).toHaveLength(2)
+            expect(policyJson.Statement[0].Resource).toBe('arn:aws:s3:::logs/*')
+            expect(policyJson.Statement[1].Resource).toBe('arn:aws:sns:*:*:alerts')
+        })
+    })
 })
