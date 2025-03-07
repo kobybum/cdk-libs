@@ -1,0 +1,35 @@
+const baseOperators = [
+    'StringEquals',
+    'StringEqualsIgnoreCase',
+    'StringLike',
+    'StringNotLike',
+    'StringNotEquals',
+    'StringNotEqualsIgnoreCase',
+    'ArnLike',
+    'NumericEquals',
+    'NumericLessThan',
+    'NumericNotEquals',
+    'NumericLessThanEquals',
+    'NumericGreaterThan',
+    'NumericGreaterThanEquals',
+    'DateEquals',
+    'DateNotEquals',
+    'DateLessThan',
+    'DateLessThanEquals',
+    'DateGreaterThan',
+    'DateGreaterThanEquals',
+    'Bool',
+    'BinaryEquals',
+    'Null',
+    'ArnEquals',
+    'ArnNotEquals',
+    'ArnNotLike',
+    'IpAddress',
+    'NotIpAddress',
+] as const
+
+// Add IfExists suffix to the types - Except for Null
+export const conditionOperators = [
+    ...baseOperators,
+    ...baseOperators.filter((op) => op !== 'Null').map((op) => `${op}IfExists`),
+] as [...typeof baseOperators, `${Exclude<(typeof baseOperators)[number], 'Null'>}IfExists`]
