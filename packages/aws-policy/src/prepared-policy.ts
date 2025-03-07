@@ -1,16 +1,14 @@
-import { type Construct } from 'constructs'
-import type { Except } from 'type-fest'
-import { type AwsPolicyStatementProps, AwsPolicy } from './statement'
-import { ScopedAwsPreparedPolicy } from './scoped-prepared-policy'
+import type { Except, UnionToIntersection } from 'type-fest'
+import { AwsPolicy } from './aws-policy'
+import { type AwsPolicyStatementProps } from './statement'
 
 /**
  * Represents a policy statement with parameters that can be filled in later.
+ *
  * This allows for creating reusable policy templates that can be filled with
  * specific values when needed.
- *
- * @template T The type of parameters this policy requires
  */
-export class AwsPreparedPolicy<T extends Record<string, any>> {
+export class AwsPreparedPolicy<T extends Record<string, unknown>> {
     /**
      * Creates a new prepared policy with the given statement function.
      * Note: Use the static `new` method instead of this constructor.
@@ -26,7 +24,6 @@ export class AwsPreparedPolicy<T extends Record<string, any>> {
     /**
      * Creates a new prepared policy with explicitly typed parameters.
      *
-     * @template T The type of parameters this policy requires
      * @param statementFn Function that generates policy statements from parameters
      * @returns A new AwsPreparedPolicy instance
      *
@@ -40,41 +37,10 @@ export class AwsPreparedPolicy<T extends Record<string, any>> {
      *   Resource: [`arn:aws:s3:::${bucketName}/*`]
      * }));
      */
-    static new<T extends Record<string, any>>(
+    static new<T extends Record<string, unknown>>(
         statementFn: (params: T) => AwsPolicyStatementProps | AwsPolicyStatementProps[],
     ): AwsPreparedPolicy<T> {
         return new AwsPreparedPolicy<T>(statementFn)
-    }
-
-    /**
-     * Creates a new prepared policy that has access to a construct scope.
-     * This allows the policy to access configuration values from the scope.
-     *
-     * @template T The type of parameters this policy requires
-     * @param statementFn Function that generates policy statements from scope and parameters
-     * @returns A new ScopedAwsPreparedPolicy instance
-     *
-     * @example
-     * const s3ReadPolicy = AwsPreparedPolicy.newScoped<{
-     *   bucketName: string;
-     * }>((scope, { bucketName }) => {
-     *   // Get config values from scope
-     *   const { accountId } = awsConfig.get(scope);
-     *
-     *   return {
-     *     Effect: 'Allow',
-     *     Action: ['s3:GetObject'],
-     *     Resource: [`arn:aws:s3:::${bucketName}/*`]
-     *   };
-     * });
-     */
-    static newScoped<T extends Record<string, any>>(
-        statementFn: (
-            scope: Construct,
-            params: T,
-        ) => AwsPolicyStatementProps | AwsPolicyStatementProps[],
-    ): ScopedAwsPreparedPolicy<T> {
-        return ScopedAwsPreparedPolicy.new(statementFn)
     }
 
     /**
@@ -99,7 +65,6 @@ export class AwsPreparedPolicy<T extends Record<string, any>> {
      * Partially fills some parameters and returns a new AwsPreparedPolicy
      * that only requires the remaining parameters.
      *
-     * @template K Keys of parameters being filled
      * @param params Subset of parameters to fill now
      * @returns A new AwsPreparedPolicy requiring only the remaining parameters
      *
@@ -117,6 +82,48 @@ export class AwsPreparedPolicy<T extends Record<string, any>> {
         return new AwsPreparedPolicy<Except<T, K>>((remainingParams) => {
             const combinedParams = { ...params, ...remainingParams } as unknown as T
             return this.statementFn(combinedParams)
+        })
+    }
+
+    /**
+     * Combines multiple prepared policies into a single prepared policy.
+     * The resulting policy will accept the union of all parameter types.
+     *
+     * @param policies An array of prepared policies to combine
+     * @returns A new prepared policy that requires all parameters from the input policies
+     *
+     * @example
+     * ```typescript
+     * const s3Policy = AwsPreparedPolicy.new<{ bucketName: string }>( ... );
+     * const lambdaPolicy = AwsPreparedPolicy.new<{ functionName: string }>( ... );
+     * const combinedPolicy = AwsPreparedPolicy.combine([s3Policy, lambdaPolicy]);
+     *
+     * // Combined policy requires both parameters
+     * const policy = combinedPolicy.fill({
+     *   bucketName: 'my-bucket',
+     *   functionName: 'my-function'
+     * });
+     * ```
+     */
+    static combine<T extends Record<string, unknown>[]>(
+        ...policies: {
+            [K in keyof T]: AwsPreparedPolicy<T[K]>
+        }
+    ): AwsPreparedPolicy<UnionToIntersection<T[number]>> {
+        return new AwsPreparedPolicy<UnionToIntersection<T[number]>>((params) => {
+            const statements: AwsPolicyStatementProps[] = []
+
+            // Apply parameters to each policy and collect statements
+            for (const policy of policies) {
+                const policyResult = policy.statementFn(params)
+                if (Array.isArray(policyResult)) {
+                    statements.push(...policyResult)
+                } else {
+                    statements.push(policyResult)
+                }
+            }
+
+            return statements
         })
     }
 }

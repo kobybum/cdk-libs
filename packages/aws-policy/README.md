@@ -124,22 +124,21 @@ const stagingPolicy = orgPolicy.fill({
 })
 ```
 
-## Scoped Policies
+## Construct Scoped Policies
 
-Create policies that can access configuration based on a construct scope.
+You can pass a Construct as a parameter to a prepared policy to create scoped policies.
 
-This is especially useful when combined with @cdklib/config to create environment-aware policies.
-
-It has a similar API to `AwsPreparedPolicy`, but the statement function requires a scope.
+This is especially useful when combined with @cdklib/config to automatically fill in configuration values.
 
 ```typescript
 import { AwsPreparedPolicy } from '@cdklib/aws-policy'
 import { awsConfig } from './config/aws'
 
-// Define a policy that can access configuration from scope
-const s3BucketPolicy = AwsPreparedPolicy.newScoped<{
+// Define a policy that includes scope as a parameter
+const s3BucketPolicy = AwsPreparedPolicy.new<{
+  scope: Construct
   bucketName: string
-}>((scope, { bucketName }) => {
+}>(({ scope, bucketName }) => {
   // Get config values from scope
   const { accountId } = awsConfig.get(scope)
 
@@ -154,8 +153,29 @@ const s3BucketPolicy = AwsPreparedPolicy.newScoped<{
 })
 
 // Provide scope and parameters
-const policy = s3BucketPolicy.fill(myApp, {
+const policy = s3BucketPolicy.fill({
+  scope: myApp,
   bucketName: 'app-assets',
+})
+```
+
+## Combining Policies
+
+You can combine multiple policies together, for example granting s3 read access and lambda invoke access.
+
+The policy statements are combined - the library does not attempt to merge policies logically.
+
+This works for both prepared and normal policies.
+
+```typescript
+// Combine regular policies
+const s3ReadPolicy = ...
+const lambdaInvokePolicy = ...
+
+// Creates a new policy with statements from both policies - parameters are combined
+AwsPreparedPolicy.combine(lambdaInvokePolicy).fill({
+  bucketName: 'my-bucket',
+  functionName: 'my-function',
 })
 ```
 
