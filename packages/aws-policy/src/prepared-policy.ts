@@ -10,25 +10,13 @@ import { type AwsPolicyStatementProps } from './statement'
  */
 export class AwsPreparedPolicy<T extends Record<string, unknown>> {
     /**
-     * Creates a new prepared policy with the given statement function.
-     * Note: Use the static `new` method instead of this constructor.
-     *
-     * @param statementFn Function that generates policy statements from parameters
-     */
-    private constructor(
-        private readonly statementFn: (
-            params: T,
-        ) => AwsPolicyStatementProps | AwsPolicyStatementProps[],
-    ) {}
-
-    /**
      * Creates a new prepared policy with explicitly typed parameters.
      *
      * @param statementFn Function that generates policy statements from parameters
      * @returns A new AwsPreparedPolicy instance
      *
      * @example
-     * const s3ReadPolicy = AwsPreparedPolicy.new<{
+     * const s3ReadPolicy = new AwsPreparedPolicy<{
      *   bucketName: string;
      *   accountId: string;
      * }>(({ bucketName, accountId }) => ({
@@ -37,11 +25,11 @@ export class AwsPreparedPolicy<T extends Record<string, unknown>> {
      *   Resource: [`arn:aws:s3:::${bucketName}/*`]
      * }));
      */
-    static new<T extends Record<string, unknown>>(
-        statementFn: (params: T) => AwsPolicyStatementProps | AwsPolicyStatementProps[],
-    ): AwsPreparedPolicy<T> {
-        return new AwsPreparedPolicy<T>(statementFn)
-    }
+    constructor(
+        private readonly statementFn: (
+            params: T,
+        ) => AwsPolicyStatementProps | AwsPolicyStatementProps[],
+    ) {}
 
     /**
      * Fills all required parameters and creates a concrete AWS policy.
@@ -94,8 +82,8 @@ export class AwsPreparedPolicy<T extends Record<string, unknown>> {
      *
      * @example
      * ```typescript
-     * const s3Policy = AwsPreparedPolicy.new<{ bucketName: string }>( ... );
-     * const lambdaPolicy = AwsPreparedPolicy.new<{ functionName: string }>( ... );
+     * const s3Policy = new AwsPreparedPolicy<{ bucketName: string }>( ... );
+     * const lambdaPolicy = new AwsPreparedPolicy<{ functionName: string }>( ... );
      * const combinedPolicy = AwsPreparedPolicy.combine([s3Policy, lambdaPolicy]);
      *
      * // Combined policy requires both parameters

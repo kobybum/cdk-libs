@@ -4,7 +4,7 @@ import { AwsPreparedPolicy } from './prepared-policy'
 describe('PreparedPolicy', () => {
     it('should create a policy with a single statement', () => {
         // Arrange
-        const s3ReadPolicy = AwsPreparedPolicy.new<{
+        const s3ReadPolicy = new AwsPreparedPolicy<{
             bucketName: string
         }>(({ bucketName }) => ({
             Effect: 'Allow',
@@ -25,7 +25,7 @@ describe('PreparedPolicy', () => {
 
     it('should create a policy with multiple statements', () => {
         // Arrange
-        const complexPolicy = AwsPreparedPolicy.new<{
+        const complexPolicy = new AwsPreparedPolicy<{
             bucketName: string
             lambdaName: string
         }>(({ bucketName, lambdaName }) => [
@@ -58,7 +58,7 @@ describe('PreparedPolicy', () => {
 
     it('should allow partial filling of parameters', () => {
         // Arrange
-        const s3ReadPolicy = AwsPreparedPolicy.new<{
+        const s3ReadPolicy = new AwsPreparedPolicy<{
             bucketName: string
             accountId: string
         }>(({ bucketName, accountId }) => ({
@@ -86,7 +86,7 @@ describe('PreparedPolicy', () => {
 
     it('should handle complex nested structures', () => {
         // Arrange
-        const complexPolicy = AwsPreparedPolicy.new<{
+        const complexPolicy = new AwsPreparedPolicy<{
             bucketName: string
             ipAddress: string
         }>(({ bucketName, ipAddress }) => ({
@@ -113,7 +113,7 @@ describe('PreparedPolicy', () => {
 
     it('should handle multiple parameter filling stages', () => {
         // Arrange
-        const multiStagePolicy = AwsPreparedPolicy.new<{
+        const multiStagePolicy = new AwsPreparedPolicy<{
             bucketName: string
             accountId: string
             userName: string
@@ -148,7 +148,7 @@ describe('PreparedPolicy', () => {
     describe('AwsPreparedPolicy.combine', () => {
         it('should combine multiple prepared policies with different parameter types', () => {
             // Arrange
-            const s3Policy = AwsPreparedPolicy.new<{
+            const s3Policy = new AwsPreparedPolicy<{
                 bucketName: string
             }>(({ bucketName }) => ({
                 Effect: 'Allow',
@@ -156,7 +156,7 @@ describe('PreparedPolicy', () => {
                 Resource: [`arn:aws:s3:::${bucketName}`, `arn:aws:s3:::${bucketName}/*`],
             }))
 
-            const lambdaPolicy = AwsPreparedPolicy.new<{
+            const lambdaPolicy = new AwsPreparedPolicy<{
                 functionName: string
                 region: string
             }>(({ functionName, region }) => ({
@@ -186,7 +186,7 @@ describe('PreparedPolicy', () => {
 
         it('should handle policies that return multiple statements', () => {
             // Arrange
-            const s3Policy = AwsPreparedPolicy.new<{
+            const s3Policy = new AwsPreparedPolicy<{
                 bucketName: string
             }>(({ bucketName }) => [
                 {
@@ -201,7 +201,7 @@ describe('PreparedPolicy', () => {
                 },
             ])
 
-            const dynamoPolicy = AwsPreparedPolicy.new<{
+            const dynamoPolicy = new AwsPreparedPolicy<{
                 tableName: string
             }>(({ tableName }) => ({
                 Effect: 'Allow',
@@ -227,7 +227,7 @@ describe('PreparedPolicy', () => {
 
         it('should work with partial filling', () => {
             // Arrange
-            const s3Policy = AwsPreparedPolicy.new<{
+            const s3Policy = new AwsPreparedPolicy<{
                 bucketName: string
             }>(({ bucketName }) => ({
                 Effect: 'Allow',
@@ -235,7 +235,7 @@ describe('PreparedPolicy', () => {
                 Resource: `arn:aws:s3:::${bucketName}/*`,
             }))
 
-            const snsPolicy = AwsPreparedPolicy.new<{
+            const snsPolicy = new AwsPreparedPolicy<{
                 topicName: string
             }>(({ topicName }) => ({
                 Effect: 'Allow',

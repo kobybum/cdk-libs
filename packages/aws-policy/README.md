@@ -81,7 +81,7 @@ Create reusable policy templates with parameters:
 import { AwsPreparedPolicy } from '@cdklib/aws-policy'
 
 // Define a reusable policy template
-const s3BucketPolicy = AwsPreparedPolicy.new<{
+const s3BucketPolicy = new AwsPreparedPolicy<{
   bucketName: string
   accountId: string
 }>(({ bucketName, accountId }) => ({
@@ -103,7 +103,7 @@ const myBucketPolicy = s3BucketPolicy.fill({
 ### Progressive Parameter Filling
 
 ```typescript
-const deploymentPolicy = AwsPreparedPolicy.new<{
+const deploymentPolicy = new AwsPreparedPolicy<{
   accountId: string
   environment: string
   serviceName: string
@@ -135,7 +135,7 @@ import { AwsPreparedPolicy } from '@cdklib/aws-policy'
 import { awsConfig } from './config/aws'
 
 // Define a policy that includes scope as a parameter
-const s3BucketPolicy = AwsPreparedPolicy.new<{
+const s3BucketPolicy = new AwsPreparedPolicy<{
   scope: Construct
   bucketName: string
 }>(({ scope, bucketName }) => {
