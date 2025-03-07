@@ -6,6 +6,7 @@ A collection of lightweight, focused libraries to enhance your AWS CDK, cdktf, a
 
 - **[@cdklib/config](./packages/config/README.md)** - Type-safe, hierarchical configuration management for CDK projects
 - **[@cdklib/argo-synth](./packages/argo-synth/README.md)** - ArgoCD-friendly directory structure for CDK8s
+- **[@cdklib/aws-policy](./packages/aws-policy/README.md)** - Type-safe AWS policy and prepared policy support
 
 ## Philosophy
 

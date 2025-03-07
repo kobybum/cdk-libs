@@ -1,0 +1,69 @@
+{
+  "name": "@cdklib/aws-policy",
+  "version": "0.0.0",
+  "description": "Typescript AWS policy and prepared policy support",
+  "main": "./dist/index.cjs",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "version": "pnpm version",
+    "publish": "pnpm build && pnpm publish --ignore-scripts --no-git-checks --access public"
+  },
+  "keywords": [
+    "aws",
+    "policy",
+    "cdk",
+    "cdktf"
+  ],
+  "author": {
+    "name": "Koby Bass",
+    "url": "https://github.com/kobybum"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/node": "^22.13.9",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
+    "@vitest/coverage-v8": "3.0.7",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "tsup": "^8.4.0",
+    "type-fest": "^4.37.0",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  },
+  "dependencies": {
+    "zod": "^3.0.0",
+    "constructs": "^10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kobybum/cdk-libs.git",
+    "directory": "packages/config"
+  },
+  "bugs": {
+    "url": "https://github.com/kobybum/cdk-libs/issues"
+  },
+  "homepage": "https://github.com/kobybum/cdk-libs",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

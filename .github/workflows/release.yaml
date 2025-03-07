@@ -15,6 +15,7 @@ on:
         options:
           - '@cdklib/config'
           - '@cdklib/argo-synth'
+          - '@cdklib/aws-policy'
 permissions:
   contents: write
 
