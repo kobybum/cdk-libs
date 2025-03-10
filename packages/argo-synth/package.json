@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "dev": "tsup --watch",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "eslint .",
