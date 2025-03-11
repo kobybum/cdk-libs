@@ -1,5 +1,6 @@
 import { addSynthPath, getSynthPath } from './paths'
-import { synthApps } from './synth'
+import { synthApps } from './synth/synth'
+export { GitOpsHelmChart, type GitOpsHelmChartConfig as GitOpsHelmChartOptions } from './helm/chart'
 
 /**
  * ArgoSynth provides utilities for organizing and synthesizing CDK8s apps into
